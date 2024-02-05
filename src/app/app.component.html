@@ -6,17 +6,17 @@
             <label>Username</label>
             <!--* checking validity with the help of the validator which we created in .ts file -->
             <!-- applying is-invalid class properties if the boolean inside it is true -->
-            <input
-                [class.is-invalid]="registrationForm.get('userName')?.invalid && registrationForm.get('userName')?.touched"
-                formControlName="userName" type="text" class="form-control">
+            <!--* Instead of writing registrationForm.get('userName') everywhere, we created a getter of userName, so are just writing userName -->
+            <input [class.is-invalid]="userName?.invalid && userName?.touched" formControlName="userName" type="text"
+                class="form-control">
             <!-- display - none if username is valid or untouched till then
             <small
-                [class.d-none]="registrationForm.get('userName')?.valid || registrationForm.get('userName')?.untouched"
+                [class.d-none]="userName?.valid || userName?.untouched"
                 class="text-danger">Username is required</small> -->
-            <div *ngIf="registrationForm.get('userName')?.invalid && registrationForm.get('userName')?.touched">
-                <small *ngIf="registrationForm.get('userName')?.errors?.['required']" class="text-danger">Username is
+            <div *ngIf="userName?.invalid && userName?.touched">
+                <small *ngIf="userName?.errors?.['required']" class="text-danger">Username is
                     required</small>
-                <small *ngIf="registrationForm.get('userName')?.errors?.['minlength']" class="text-danger">Username must
+                <small *ngIf="userName?.errors?.['minlength']" class="text-danger">Username must
                     be atleast 3 characters long</small>
             </div>
         </div>

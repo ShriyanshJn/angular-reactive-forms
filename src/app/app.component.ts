@@ -15,6 +15,10 @@ export class AppComponent {
 
   constructor(private _formBuilder: FormBuilder) { }
 
+  get userName() {
+    return this.registrationForm.get('userName')
+  }
+
   //* 1.
   //* whole form - FormGroup, one field component of form - FormControl, they together comprise of FormModel
   // registrationForm = new FormGroup({
