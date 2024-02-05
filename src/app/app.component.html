@@ -1,10 +1,24 @@
 <!--* Model-View association using formGroup, formControlName directives -->
-<div class="container-fluid">
+<div class="container">
     <h2>Registration Form</h2>
     <form [formGroup]="registrationForm">
         <div class="form-group">
             <label>Username</label>
-            <input formControlName="userName" type="text" class="form-control">
+            <!--* checking validity with the help of the validator which we created in .ts file -->
+            <!-- applying is-invalid class properties if the boolean inside it is true -->
+            <input
+                [class.is-invalid]="registrationForm.get('userName')?.invalid && registrationForm.get('userName')?.touched"
+                formControlName="userName" type="text" class="form-control">
+            <!-- display - none if username is valid or untouched till then
+            <small
+                [class.d-none]="registrationForm.get('userName')?.valid || registrationForm.get('userName')?.untouched"
+                class="text-danger">Username is required</small> -->
+            <div *ngIf="registrationForm.get('userName')?.invalid && registrationForm.get('userName')?.touched">
+                <small *ngIf="registrationForm.get('userName')?.errors?.['required']" class="text-danger">Username is
+                    required</small>
+                <small *ngIf="registrationForm.get('userName')?.errors?.['minlength']" class="text-danger">Username must
+                    be atleast 3 characters long</small>
+            </div>
         </div>
         <div class="form-group">
             <label>Password</label>

@@ -3,8 +3,8 @@
 //*   2. FormBuilder - short refactored way to create Form Model
 
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { FormBuilder } from '@angular/forms';
+// import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, Validator, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -31,7 +31,8 @@ export class AppComponent {
 
   //* 2.
   registrationForm = this._formBuilder.group({
-    userName: ['Rajeev'],
+    // userName: [defaultValue,[Validations]]
+    userName: ['Rajeev', [Validators.required, Validators.minLength(3)]],
     password: [''],
     confirmPassword: [''],
     address: this._formBuilder.group({
