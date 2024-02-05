@@ -5,6 +5,7 @@
 import { Component } from '@angular/core';
 // import { FormControl, FormGroup } from '@angular/forms';
 import { FormBuilder, Validator, Validators } from '@angular/forms';
+import { forbiddenNameValidator } from './shared/user-name.validator';
 
 @Component({
   selector: 'app-root',
@@ -36,7 +37,7 @@ export class AppComponent {
   //* 2.
   registrationForm = this._formBuilder.group({
     // userName: [defaultValue,[Validations]]
-    userName: ['Rajeev', [Validators.required, Validators.minLength(3)]],
+    userName: ['Rajeev', [Validators.required, Validators.minLength(3), forbiddenNameValidator(/admin/)]],
     password: [''],
     confirmPassword: [''],
     address: this._formBuilder.group({
@@ -49,7 +50,7 @@ export class AppComponent {
   loadAPIData() {
     //* .setValue can be used to set all the form control values, while .patchValue can be used if we want to set only few of the form control values
     this.registrationForm.patchValue({
-      userName: 'John',
+      // userName: 'John',
       // password: 'test',
       // confirmPassword: 'test',
       address: {
