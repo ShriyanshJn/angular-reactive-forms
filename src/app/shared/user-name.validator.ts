@@ -11,7 +11,7 @@ import { AbstractControl, ValidatorFn } from "@angular/forms";
 //     return forbiddenName ? { 'forbiddenName': { value: control.value } } : null
 // }
 
-// * to overcome above disadvantage we use Factory function
+// * to overcome above disadvantage we use Factory function, we get access of whole of the registration form
 export function forbiddenNameValidator(forbiddenName: RegExp): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
         // if username form control has any substring 'admin' then we set forbiddenName flag to true else we set it to false

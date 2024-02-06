@@ -2,22 +2,29 @@
 //*   1. FormGroup + FormControl
 //*   2. FormBuilder - short refactored way to create Form Model
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 // import { FormControl, FormGroup } from '@angular/forms';
-import { FormBuilder, Validator, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, RequiredValidator, Validator, Validators } from '@angular/forms';
 import { forbiddenNameValidator } from './shared/user-name.validator';
+import { PasswordValidator } from './shared/password.validator';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   constructor(private _formBuilder: FormBuilder) { }
 
+  registrationForm!: FormGroup
+
   get userName() {
     return this.registrationForm.get('userName')
+  }
+
+  get email() {
+    return this.registrationForm.get('email')
   }
 
   //* 1.
@@ -34,18 +41,33 @@ export class AppComponent {
   //   })
   // })
 
-  //* 2.
-  registrationForm = this._formBuilder.group({
-    // userName: [defaultValue,[Validations]]
-    userName: ['Rajeev', [Validators.required, Validators.minLength(3), forbiddenNameValidator(/admin/)]],
-    password: [''],
-    confirmPassword: [''],
-    address: this._formBuilder.group({
-      city: [''],
-      state: [''],
-      postalCode: ['']
+  ngOnInit(): void {
+    //* 2.
+    this.registrationForm = this._formBuilder.group({
+      // userName: [defaultValue,[Validations]]
+      userName: ['Rajeev', [Validators.required, Validators.minLength(3), forbiddenNameValidator(/admin/)]],
+      email: [''],
+      subscribe: [false],
+      password: [''],
+      confirmPassword: [''],
+      address: this._formBuilder.group({
+        city: [''],
+        state: [''],
+        postalCode: ['']
+      })
+    }, { validator: PasswordValidator })
+
+    this.registrationForm.get('subscribe')?.valueChanges.subscribe(checkedValue => {
+      const email = this.registrationForm.get('email')
+      if (checkedValue) {
+        email?.setValidators(Validators.required)
+      } else {
+        email?.clearValidators()
+      }
+      // to ensure correct status is reflected
+      email?.updateValueAndValidity()
     })
-  })
+  }
 
   loadAPIData() {
     //* .setValue can be used to set all the form control values, while .patchValue can be used if we want to set only few of the form control values
