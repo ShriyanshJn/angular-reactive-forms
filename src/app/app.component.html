@@ -24,9 +24,14 @@
         </div>
         <div class="form-group">
             <label>Email</label>
+            <button class="btn btn-secondary btn-sm" style="margin: 10px 10px" (click)="addAlternateEmail()">Add
+                E-Mail</button>
             <input [class.is-invalid]="email?.touched && email?.invalid" type="text" formControlName="email"
                 class="form-control">
             <small class="text-danger" *ngIf="email?.errors?.['required']">Email is required</small>
+            <div formArrayName="alternateEmails" *ngFor="let email of alternateEmails.controls; let i = index">
+                <input type="text" class="form-control my-1" formControlName="{{i}}">
+            </div>
         </div>
         <div class="form-check mb-2">
             <input class="form-check-input" formControlName="subscribe" type="checkbox">

@@ -1,10 +1,12 @@
+//* FormArray - Array, Dynamic Controls ; FormGroup - Object
+
 //* There are 2 ways to create Form Model 
 //*   1. FormGroup + FormControl
 //*   2. FormBuilder - short refactored way to create Form Model
 
 import { Component, OnInit } from '@angular/core';
 // import { FormControl, FormGroup } from '@angular/forms';
-import { FormBuilder, FormGroup, RequiredValidator, Validator, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, RequiredValidator, Validator, Validators, FormArray } from '@angular/forms';
 import { forbiddenNameValidator } from './shared/user-name.validator';
 import { PasswordValidator } from './shared/password.validator';
 
@@ -27,9 +29,18 @@ export class AppComponent implements OnInit {
     return this.registrationForm.get('email')
   }
 
+  get alternateEmails() {
+    return this.registrationForm.get('alternateEmails') as FormArray
+  }
+
+  addAlternateEmail() {
+    this.alternateEmails.push(this._formBuilder.control(''))
+    // console.log(this.alternateEmails)
+  }
+
   //* 1.
   //* whole form - FormGroup, one field component of form - FormControl, they together comprise of FormModel
-  // registrationForm = new FormGroup({
+  // this.registrationForm = new FormGroup({
   //   userName: new FormControl('Rajeev'), //* We can set default value
   //   password: new FormControl(''),
   //   confirmPassword: new FormControl(''),
@@ -54,7 +65,8 @@ export class AppComponent implements OnInit {
         city: [''],
         state: [''],
         postalCode: ['']
-      })
+      }),
+      alternateEmails: this._formBuilder.array([])
     }, { validator: PasswordValidator })
 
     this.registrationForm.get('subscribe')?.valueChanges.subscribe(checkedValue => {
