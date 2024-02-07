@@ -9,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, RequiredValidator, Validator, Validators, FormArray } from '@angular/forms';
 import { forbiddenNameValidator } from './shared/user-name.validator';
 import { PasswordValidator } from './shared/password.validator';
+import { RegistrationService } from './registration.service';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,7 @@ import { PasswordValidator } from './shared/password.validator';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private _formBuilder: FormBuilder) { }
+  constructor(private _formBuilder: FormBuilder, private _registrationService: RegistrationService) { }
 
   registrationForm!: FormGroup
 
@@ -38,11 +39,21 @@ export class AppComponent implements OnInit {
     // console.log(this.alternateEmails)
   }
 
+  onSubmit() {
+    console.log(this.registrationForm.value)
+    this._registrationService.register(this.registrationForm.value)
+      .subscribe(
+        response => console.log('Success!', response),
+        error => console.log('Error!', error)
+      )
+  }
+
   //* 1.
   //* whole form - FormGroup, one field component of form - FormControl, they together comprise of FormModel
   // this.registrationForm = new FormGroup({
   //   userName: new FormControl('Rajeev'), //* We can set default value
   //   password: new FormControl(''),
+
   //   confirmPassword: new FormControl(''),
   //   //* Using nested FormGroup to group city, state and postalCode in address
   //   address: new FormGroup({
@@ -61,11 +72,9 @@ export class AppComponent implements OnInit {
       subscribe: [false],
       password: [''],
       confirmPassword: [''],
-      address: this._formBuilder.group({
-        city: [''],
-        state: [''],
-        postalCode: ['']
-      }),
+      city: [''],
+      state: [''],
+      postalCode: [''],
       alternateEmails: this._formBuilder.array([])
     }, { validator: PasswordValidator })
 
@@ -87,11 +96,11 @@ export class AppComponent implements OnInit {
       // userName: 'John',
       // password: 'test',
       // confirmPassword: 'test',
-      address: {
-        city: 'Gurugram',
-        state: 'Haryana',
-        postalCode: '122003'
-      }
+
+      city: 'Gurugram',
+      state: 'Haryana',
+      postalCode: '122003'
+
     })
   }
 }

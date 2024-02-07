@@ -1,7 +1,7 @@
 <!--* Model-View association using formGroup, formControlName directives -->
 <div class="container">
     <h2>Registration Form</h2>
-    <form [formGroup]="registrationForm">
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
             <label>Username</label>
             <!--* checking validity with the help of the validator which we created in .ts file -->
@@ -47,20 +47,20 @@
                 type="password" class="form-control">
             <small *ngIf="registrationForm.errors?.['misMatch']" class="text-danger">Passwords do not match</small>
         </div>
-        <div formGroupName="address">
-            <div class="form-group">
-                <label>City</label>
-                <input formControlName="city" type="text" class="form-control">
-            </div>
-            <div class="form-group">
-                <label>State</label>
-                <input formControlName="state" type="text" class="form-control">
-            </div>
-            <div class="form-group">
-                <label>Postal Code</label>
-                <input formControlName="postalCode" type="text" class="form-control">
-            </div>
+        <!-- <div formGroupName="address"> -->
+        <div class="form-group">
+            <label>City</label>
+            <input formControlName="city" type="text" class="form-control">
         </div>
+        <div class="form-group">
+            <label>State</label>
+            <input formControlName="state" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Postal Code</label>
+            <input formControlName="postalCode" type="text" class="form-control">
+        </div>
+        <!-- </div> -->
         <button class="btn btn-primary" style="margin: 10px 0" type="submit">Register</button>
         <button class="btn btn-secondary" style="margin: 10px 10px" (click)="loadAPIData()" type="submit">Load API
             Data</button>
