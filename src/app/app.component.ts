@@ -6,10 +6,11 @@
 
 import { Component, OnInit } from '@angular/core';
 // import { FormControl, FormGroup } from '@angular/forms';
-import { FormBuilder, FormGroup, RequiredValidator, Validator, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, RequiredValidator, Validator, Validators, FormArray, FormControl } from '@angular/forms';
 import { forbiddenNameValidator } from './shared/user-name.validator';
 import { PasswordValidator } from './shared/password.validator';
 import { RegistrationService } from './registration.service';
+import { RxwebValidators } from '@rxweb/reactive-form-validators';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,21 @@ import { RegistrationService } from './registration.service';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private _formBuilder: FormBuilder, private _registrationService: RegistrationService) { }
+  constructor(private _formBuilder: FormBuilder, private _registrationService: RegistrationService) {
+    //* 2.
+    this.registrationForm = this._formBuilder.group({
+      // userName: [defaultValue,[Validations]]
+      userName: ['Rajeev', [Validators.required, Validators.minLength(3), forbiddenNameValidator(/admin/)]],
+      email: [''],
+      subscribe: [false],
+      password: [''],
+      confirmPassword: [''],
+      city: [''],
+      state: [''],
+      postalCode: ['', [RxwebValidators.digit(), Validators.minLength(6), Validators.maxLength(6)]],
+      alternateEmails: this._formBuilder.array([])
+    }, { validator: PasswordValidator })
+  }
 
   registrationForm!: FormGroup
 
@@ -64,19 +79,6 @@ export class AppComponent implements OnInit {
   // })
 
   ngOnInit(): void {
-    //* 2.
-    this.registrationForm = this._formBuilder.group({
-      // userName: [defaultValue,[Validations]]
-      userName: ['Rajeev', [Validators.required, Validators.minLength(3), forbiddenNameValidator(/admin/)]],
-      email: [''],
-      subscribe: [false],
-      password: [''],
-      confirmPassword: [''],
-      city: [''],
-      state: [''],
-      postalCode: [''],
-      alternateEmails: this._formBuilder.array([])
-    }, { validator: PasswordValidator })
 
     this.registrationForm.get('subscribe')?.valueChanges.subscribe(checkedValue => {
       const email = this.registrationForm.get('email')
@@ -89,7 +91,10 @@ export class AppComponent implements OnInit {
       email?.updateValueAndValidity()
     })
   }
-
+  // checkPIN() {
+  //   debugger
+  //   this.registrationForm
+  // }
   loadAPIData() {
     //* .setValue can be used to set all the form control values, while .patchValue can be used if we want to set only few of the form control values
     this.registrationForm.patchValue({

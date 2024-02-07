@@ -1,4 +1,3 @@
-import { createPlatform } from "@angular/core";
 import { AbstractControl } from "@angular/forms";
 
 // With control we get access of the whole form group

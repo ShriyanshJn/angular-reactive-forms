@@ -58,7 +58,9 @@
         </div>
         <div class="form-group">
             <label>Postal Code</label>
-            <input formControlName="postalCode" type="text" class="form-control">
+            <input [class.is-invalid]="registrationForm.get('postalCode')?.invalid" formControlName="postalCode"
+                type="text" class="form-control">
+            <small *ngIf="registrationForm.get('postalCode')?.invalid" class="text-danger">Invalid Postal Code</small>
         </div>
         <!-- </div> -->
         <button class="btn btn-primary" style="margin: 10px 0" type="submit">Register</button>
@@ -67,4 +69,5 @@
     </form>
     {{registrationForm.value | json}}
     {{registrationForm.errors | json}}
+    <!-- {{registrationForm.controls['postalCode']| json}} -->
 </div>

@@ -11,7 +11,6 @@ export class RegistrationService {
   _url = "https://localhost:44396/api/User/CreateUser"
 
   register(userData: any) {
-    debugger;
     return this._http.post<any>(this._url, userData)
   }
 
